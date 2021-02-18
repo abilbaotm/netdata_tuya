@@ -20,30 +20,30 @@ class Service(SimpleService):
         ORDER = []
         CHARTS = {}
 
-        CHARTS[DEVICE['id']+'_power'] = {
-            'options': [DEVICE['alias'], 'watts', 'unidades', 'Power',
-                        'Power2', 'line'],
+        CHARTS['power'] = {
+            'options': [DEVICE['alias'], 'watts', None, DEVICE['alias'],
+                        'tuya.power', 'line'],
             'lines': [
                 ['watts', 'W', 'absolute', 1, 100]
             ]
         }
-        CHARTS[DEVICE['id']+'_amps'] = {
-            'options': [DEVICE['alias'], 'amps', 'unidades', 'Power',
-                        'Power2', 'line'],
+        CHARTS['amps'] = {
+            'options': [DEVICE['alias'], 'amps', None, DEVICE['alias'],
+                        'tuya.amps', 'line'],
             'lines': [
                 ['mA', 'mA', 'absolute', 1, 100]
             ]
         }
-        CHARTS[DEVICE['id']+'_volts'] = {
-            'options': [DEVICE['alias'], 'volts', 'unidades', 'Power',
-                        'Power2', 'line'],
+        CHARTS['volts'] = {
+            'options': [DEVICE['alias'], 'volts', None, DEVICE['alias'],
+                        'tuya.volts', 'line'],
             'lines': [
                 ['V', 'V', 'absolute', 1, 100]
             ]
         }
-        ORDER.append(DEVICE['id']+'_power')
-        ORDER.append(DEVICE['id']+'_amps')
-        ORDER.append(DEVICE['id']+'_volts')
+        ORDER.append('power')
+        ORDER.append('amps')
+        ORDER.append('volts')
 
         self.device = DEVICE
         self.order = ORDER
