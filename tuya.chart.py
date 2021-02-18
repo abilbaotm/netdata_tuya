@@ -21,21 +21,21 @@ class Service(SimpleService):
         CHARTS = {}
 
         CHARTS['power'] = {
-            'options': [DEVICE['alias'], 'watts', None, DEVICE['alias'],
+            'options': [None, 'watts', None, DEVICE['id'],
                         'tuya.power', 'line'],
             'lines': [
                 ['watts', 'W', 'absolute', 1, 100]
             ]
         }
         CHARTS['amps'] = {
-            'options': [DEVICE['alias'], 'amps', None, DEVICE['alias'],
+            'options': [None, 'amps', None, DEVICE['id'],
                         'tuya.amps', 'line'],
             'lines': [
                 ['mA', 'mA', 'absolute', 1, 100]
             ]
         }
         CHARTS['volts'] = {
-            'options': [DEVICE['alias'], 'volts', None, DEVICE['alias'],
+            'options': [None, 'volts', None, DEVICE['id'],
                         'tuya.volts', 'line'],
             'lines': [
                 ['V', 'V', 'absolute', 1, 100]
