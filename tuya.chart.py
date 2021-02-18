@@ -7,28 +7,47 @@ from random import SystemRandom
 
 from bases.FrameworkServices.SimpleService import SimpleService
 
+import tuyapower
+
 priority = 90000
-
-ORDER = [
-    'random',
-]
-
-CHARTS = {
-    'random': {
-        'options': [None, 'A random number', 'random number', 'random', 'random', 'line'],
-        'lines': [
-            ['random1']
-        ]
-    }
-}
 
 
 class Service(SimpleService):
     def __init__(self, configuration=None, name=None):
         SimpleService.__init__(self, configuration=configuration, name=name)
+
+        DEVICE = configuration['device']
+        ORDER = []
+        CHARTS = {}
+
+        CHARTS[DEVICE['id']+'_power'] = {
+            'options': [DEVICE['alias'], 'watts', 'unidades', 'Power',
+                        'Power2', 'line'],
+            'lines': [
+                ['watts', 'W', 'absolute', 1, 100]
+            ]
+        }
+        CHARTS[DEVICE['id']+'_amps'] = {
+            'options': [DEVICE['alias'], 'amps', 'unidades', 'Power',
+                        'Power2', 'line'],
+            'lines': [
+                ['mA', 'mA', 'absolute', 1, 100]
+            ]
+        }
+        CHARTS[DEVICE['id']+'_volts'] = {
+            'options': [DEVICE['alias'], 'volts', 'unidades', 'Power',
+                        'Power2', 'line'],
+            'lines': [
+                ['V', 'V', 'absolute', 1, 100]
+            ]
+        }
+        ORDER.append(DEVICE['id']+'_power')
+        ORDER.append(DEVICE['id']+'_amps')
+        ORDER.append(DEVICE['id']+'_volts')
+
+        self.device = DEVICE
         self.order = ORDER
         self.definitions = CHARTS
-        self.random = SystemRandom()
 
     @staticmethod
     def check():
@@ -36,13 +55,12 @@ class Service(SimpleService):
 
     def get_data(self):
         data = dict()
-
-        for i in range(1, 4):
-            dimension_id = ''.join(['random', str(i)])
-
-            if dimension_id not in self.charts['random']:
-                self.charts['random'].add_dimension([dimension_id])
-
-            data[dimension_id] = self.random.randint(0, 100)
+        (on, w, mA, V, err) = tuyapower.deviceInfo(self.device['id'],
+                                                   self.device['ip'],
+                                                   self.device['localKey'],
+                                                   self.device['version'])
+        data['watts'] = w * 100
+        data['mA'] = mA * 100
+        data['V'] = V * 100
 
         return data
